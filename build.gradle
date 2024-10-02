@@ -7,12 +7,11 @@ apply plugin: 'opensearch.opensearchplugin'
 apply plugin: 'opensearch.yaml-rest-test'
 apply plugin: 'opensearch.pluginzip'
 
-def pluginName = 'rename'
-def pluginDescription = 'Custom plugin'
+def pluginName = 'test-plugin'
+def pluginDescription = 'Custom plugin to post an index'
 def projectPath = 'org.opensearch'
-def pathToPlugin = 'path.to.plugin'
-def pluginClassName = 'RenamePlugin'
-group = "RenameGroup"
+def pathToPlugin = 'my.plugin'
+def pluginClassName = 'TestPlugin'
 
 tasks.register("preparePluginPathDirs") {
     mustRunAfter clean
@@ -38,13 +37,20 @@ publishing {
               }
               developers {
                 developer {
-                  name = "OpenSearch"
-                  url = "https://github.com/opensearch-project/opensearch-plugin-template-java"
+                  name = "Wazuh"
+                  url = "https://wazuh.com"
                 }
               }
             }
         }
     }
+}
+
+allprojects {
+    group = "${projectPath}"
+    //version = "${wazuh_version}" + ".${revision}"
+    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 opensearchplugin {
@@ -63,7 +69,7 @@ validateNebulaPom.enabled = false
 
 buildscript {
     ext {
-        opensearch_version = System.getProperty("opensearch.version", "3.0.0-SNAPSHOT")
+        opensearch_version = System.getProperty("opensearch.version", "2.16.0")
     }
 
     repositories {
@@ -86,7 +92,7 @@ repositories {
 }
 
 test {
-    include '**/*Tests.class'
+//    include '**/*Tests.class'
 }
 
 task integTest(type: RestIntegTestTask) {
